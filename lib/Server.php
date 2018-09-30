@@ -1,6 +1,7 @@
 <?php
 namespace lib;
 
+use components\project\ErrorHandle;
 use util\Log;
 
 class Server{
@@ -29,10 +30,12 @@ class Server{
                 // 检测三次主进程状态
                 for($i = 0; $i < 3; $i ++){
                     if(\swoole_process::kill($pid,SIG_DFL)){
-                        die("server is already running now\r\n");
+                        exit("server is already running now\r\n");
                     }
                     sleep(1);
                 }
+            }else{
+                throw new ErrorHandle("master process status is exception");
             }
         }
         $pid = posix_getpid();
@@ -57,21 +60,25 @@ class Server{
                if($result){
                    Log::getInstance()->write("master process {$pid} was stopped success");
                    unlink($masterPidFile);
+                   return true;
                }else{
                    Log::getInstance()->write("master process {$pid} was stopped failed");
+                   return false;
                }
-               exit();
             }
-            die("server status is exception\r\n");
+            return false;
         }
-        die("server is not running\r\n");
+        return false;
     }
 
     // 重启服务
     public function restart(){
-        $this->stop();
-        sleep(2);
-        $this->start();
+        if($this->stop()){
+            sleep(2);
+            $this->start();
+        }else{
+            exit("restart failed...\r\n");
+        }
     }
 
     // 展示信息
