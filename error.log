@@ -1,0 +1,7 @@
+Uncaught ArgumentCountError: Too few arguments to function bootstrap\ExceptionHandle::render(), 1 passed and exactly 4 expected in C:\360Download\PhpStudy\PHPTutorial\WWW\PHP\day0929\bootstrap\ExceptionHandle.php:8
+Stack trace:
+#0 [internal function]: bootstrap\ExceptionHandle::render(Object(Error))
+#1 {main}
+  thrown (C:\360Download\PhpStudy\PHPTutorial\WWW\PHP\day0929\bootstrap\ExceptionHandle.php:8)
+Stack trace:
+#0 unknown(0): handleFatal()
